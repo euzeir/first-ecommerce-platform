@@ -6,27 +6,22 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Entity
-public class Item {
+public class InvoiceHeader {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long itemId;
-    private String itemName;
-    private String itemDescription;
-    private Long itemPrice;
-    private String itemCategory;
-    private LocalDateTime itemCreationDate;
-    private LocalDateTime itemLastModificationDate;
+    private Long invoiceId;
+    private Long userId;
+    private Long invoiceTotal;
 
     @OneToMany(targetEntity = InvoiceRows.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "itemInvoiceRowsFK", referencedColumnName = "itemId")
+    @JoinColumn(name = "invoiceHeaderInvoiceRowsFK", referencedColumnName = "invoiceId")
     private List<InvoiceRows> invoiceRowsList;
-
 }

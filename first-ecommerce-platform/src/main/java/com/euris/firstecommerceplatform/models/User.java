@@ -1,15 +1,26 @@
 package com.euris.firstecommerceplatform.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-@Entity(name = "user")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="userId", nullable = false, updatable = false)
+    private Long userId;
     private String userName;
     private String userSurname;
     private String userEmail;
@@ -17,70 +28,7 @@ public class User {
     private LocalDateTime userCreationDate;
     private LocalDateTime userLastModificationDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Orders",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "itemId")
-    )
-    private List<Item> items;
-
-    public User() {
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserSurname() {
-        return userSurname;
-    }
-
-    public void setUserSurname(String userSurname) {
-        this.userSurname = userSurname;
-    }
-
-    public LocalDateTime getUserCreationDate() {
-        return userCreationDate;
-    }
-
-    public void setUserCreationDate(LocalDateTime userCreationDate) {
-        this.userCreationDate = userCreationDate;
-    }
-
-    public LocalDateTime getUserLastModificationDate() {
-        return userLastModificationDate;
-    }
-
-    public void setUserLastModificationDate(LocalDateTime userLastModificationDate) {
-        this.userLastModificationDate = userLastModificationDate;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public Date getUserBirthday() {
-        return userBirthday;
-    }
-
-    public void setUserBirthday(Date userBirthday) {
-        this.userBirthday = userBirthday;
-    }
+    @OneToMany(targetEntity = InvoiceHeader.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userInvoiceHeaderFK", referencedColumnName = "userId")
+    private List<InvoiceHeader> invoiceHeaders;
 }
